@@ -20,7 +20,7 @@
 #include <sys/cdefs.h>
 #include <sys/types.h>
 #include <assert.h>
-#include <sha1.h>
+#include "sha1.h"
 #include <string.h>
 
 #if HAVE_NBTOOL_CONFIG_H

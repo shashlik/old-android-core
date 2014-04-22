@@ -9,6 +9,7 @@
 #ifndef _SYS_SHA1_H_
 #define	_SYS_SHA1_H_
 
+#include <stdint.h>
 #include <sys/cdefs.h>
 #include <sys/types.h>
 

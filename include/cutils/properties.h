@@ -72,7 +72,7 @@ int property_get(const char *key, char *value, const char *default_value) {
  * We have an external property server instead of built-in libc support.
  * Used by the simulator.
  */
-#define SYSTEM_PROPERTY_PIPE_NAME       "/tmp/android-sysprop"
+#define SYSTEM_PROPERTY_PIPE_NAME       "/tmp/shashlik-sysprop"
 
 enum {
     kSystemPropertyUnknown = 0,

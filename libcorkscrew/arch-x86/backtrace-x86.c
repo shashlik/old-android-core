@@ -857,9 +857,15 @@ ssize_t unwind_backtrace_ptrace_arch(pid_t tid, const ptrace_context_t* context,
     }
 
     unwind_state_t state;
+#ifdef __x86_64__
+    state.reg[DWARF_EBP] = regs.rbp;
+    state.reg[DWARF_EIP] = regs.rip;
+    state.reg[DWARF_ESP] = regs.rsp;
+#else
     state.reg[DWARF_EBP] = regs.ebp;
     state.reg[DWARF_EIP] = regs.eip;
     state.reg[DWARF_ESP] = regs.esp;
+#endif
 
     memory_t memory;
     init_memory_ptrace(&memory, tid);

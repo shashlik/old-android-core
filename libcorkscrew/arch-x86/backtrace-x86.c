@@ -828,6 +828,10 @@ ssize_t unwind_backtrace_signal_arch(siginfo_t* siginfo __attribute__((unused)),
     state.reg[DWARF_EBP] = uc->uc_mcontext->__ss.__ebp;
     state.reg[DWARF_ESP] = uc->uc_mcontext->__ss.__esp;
     state.reg[DWARF_EIP] = uc->uc_mcontext->__ss.__eip;
+#elif defined __x86_64__
+    state.reg[DWARF_EBP] = uc->uc_mcontext.gregs[REG_RBP];
+    state.reg[DWARF_ESP] = uc->uc_mcontext.gregs[REG_RSP];
+    state.reg[DWARF_EIP] = uc->uc_mcontext.gregs[REG_RIP];
 #else
     state.reg[DWARF_EBP] = uc->uc_mcontext.gregs[REG_EBP];
     state.reg[DWARF_ESP] = uc->uc_mcontext.gregs[REG_ESP];

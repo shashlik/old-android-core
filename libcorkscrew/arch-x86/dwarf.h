@@ -111,7 +111,11 @@ typedef struct {
 
 typedef struct {
     char rule;         // rule: o - offset(value); r - register(value)
+#ifdef __x86_64__
+    uint64_t value;    // value
+#else
     uint32_t value;    // value
+#endif
 } reg_rule_t;
 
 /* Dwarf preserved number of registers for x86. */

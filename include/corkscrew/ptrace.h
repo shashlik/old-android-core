@@ -26,6 +26,11 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+#if __i386__ || __x86_64__
+#undef _SYS_USER_H
+#include <sys/user.h>
+#endif
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -41,29 +46,6 @@ typedef struct {
     pid_t tid;
     const map_info_t* map_info_list;
 } memory_t;
-
-#if __i386__
-/* ptrace() register context. */
-typedef struct pt_regs_x86 {
-    uint32_t ebx;
-    uint32_t ecx;
-    uint32_t edx;
-    uint32_t esi;
-    uint32_t edi;
-    uint32_t ebp;
-    uint32_t eax;
-    uint32_t xds;
-    uint32_t xes;
-    uint32_t xfs;
-    uint32_t xgs;
-    uint32_t orig_eax;
-    uint32_t eip;
-    uint32_t xcs;
-    uint32_t eflags;
-    uint32_t esp;
-    uint32_t xss;
-} pt_regs_x86_t;
-#endif
 
 #if __mips__
 /* ptrace() GET_REGS context. */

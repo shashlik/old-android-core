@@ -851,7 +851,7 @@ ssize_t unwind_backtrace_ptrace_arch(pid_t tid, const ptrace_context_t* context,
 #if defined(__APPLE__)
     return -1;
 #else
-    pt_regs_x86_t regs;
+    struct user_regs_struct regs;
     if (ptrace(PTRACE_GETREGS, tid, 0, &regs)) {
         return -1;
     }

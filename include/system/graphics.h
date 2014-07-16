@@ -18,6 +18,7 @@
 #define SYSTEM_CORE_INCLUDE_ANDROID_GRAPHICS_H
 
 #include <stdint.h>
+#include <stdlib.h>
 
 #ifdef __cplusplus
 extern "C" {

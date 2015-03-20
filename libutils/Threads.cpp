@@ -34,7 +34,7 @@
 # include <sched.h>
 # include <sys/resource.h>
 #ifdef HAVE_ANDROID_OS
-# include <bionic_pthread.h>
+// # include <bionic_pthread.h>
 #endif
 #elif defined(HAVE_WIN32_THREADS)
 # include <windows.h>
@@ -739,10 +739,10 @@ int Thread::_threadLoop(void* user)
     wp<Thread> weak(strong);
     self->mHoldSelf.clear();
 
-#ifdef HAVE_ANDROID_OS
-    // this is very useful for debugging with gdb
-    self->mTid = gettid();
-#endif
+// #ifdef HAVE_ANDROID_OS
+//     // this is very useful for debugging with gdb
+//     self->mTid = gettid();
+// #endif
 
     bool first = true;
 
@@ -856,13 +856,13 @@ pid_t Thread::getTid() const
     // mTid is not defined until the child initializes it, and the caller may need it earlier
     Mutex::Autolock _l(mLock);
     pid_t tid;
-    if (mRunning) {
-        pthread_t pthread = android_thread_id_t_to_pthread(mThread);
-        tid = __pthread_gettid(pthread);
-    } else {
+//     if (mRunning) {
+//         pthread_t pthread = android_thread_id_t_to_pthread(mThread);
+//         tid = __pthread_gettid(pthread);
+//     } else {
         ALOGW("Thread (this=%p): getTid() is undefined before run()", this);
         tid = -1;
-    }
+//     }
     return tid;
 }
 #endif

@@ -23,7 +23,7 @@
 #include <linux/ioctl.h>
 #include <linux/rtc.h>
 #include <utils/Atomic.h>
-#include <linux/android_alarm.h>
+// #include <linux/android_alarm.h>
 #endif
 
 #include <sys/time.h>
@@ -110,59 +110,59 @@ static inline void checkTimeStamps(int64_t timestamp,
  */
 int64_t elapsedRealtimeNano()
 {
-#ifdef HAVE_ANDROID_OS
-    struct timespec ts;
-    int result;
-    int64_t timestamp;
-#if DEBUG_TIMESTAMP
-    static volatile int64_t prevTimestamp;
-    static volatile int prevMethod;
-#endif
-
-#if 0
-    /*
-     * b/7100774
-     * clock_gettime appears to have clock skews and can sometimes return
-     * backwards values. Disable its use until we find out what's wrong.
-     */
-    result = clock_gettime(CLOCK_BOOTTIME, &ts);
-    if (result == 0) {
-        timestamp = seconds_to_nanoseconds(ts.tv_sec) + ts.tv_nsec;
-        checkTimeStamps(timestamp, &prevTimestamp, &prevMethod,
-                        METHOD_CLOCK_GETTIME);
-        return timestamp;
-    }
-#endif
-
-    // CLOCK_BOOTTIME doesn't exist, fallback to /dev/alarm
-    static int s_fd = -1;
-
-    if (s_fd == -1) {
-        int fd = open("/dev/alarm", O_RDONLY);
-        if (android_atomic_cmpxchg(-1, fd, &s_fd)) {
-            close(fd);
-        }
-    }
-
-    result = ioctl(s_fd,
-            ANDROID_ALARM_GET_TIME(ANDROID_ALARM_ELAPSED_REALTIME), &ts);
-
-    if (result == 0) {
-        timestamp = seconds_to_nanoseconds(ts.tv_sec) + ts.tv_nsec;
-        checkTimeStamps(timestamp, &prevTimestamp, &prevMethod, METHOD_IOCTL);
-        return timestamp;
-    }
-
-    // XXX: there was an error, probably because the driver didn't
-    // exist ... this should return
-    // a real error, like an exception!
-    timestamp = systemTime(SYSTEM_TIME_MONOTONIC);
-    checkTimeStamps(timestamp, &prevTimestamp, &prevMethod,
-                    METHOD_SYSTEMTIME);
-    return timestamp;
-#else
+// #ifdef HAVE_ANDROID_OS
+//     struct timespec ts;
+//     int result;
+//     int64_t timestamp;
+// #if DEBUG_TIMESTAMP
+//     static volatile int64_t prevTimestamp;
+//     static volatile int prevMethod;
+// #endif
+// 
+// #if 0
+//     /*
+//      * b/7100774
+//      * clock_gettime appears to have clock skews and can sometimes return
+//      * backwards values. Disable its use until we find out what's wrong.
+//      */
+//     result = clock_gettime(CLOCK_BOOTTIME, &ts);
+//     if (result == 0) {
+//         timestamp = seconds_to_nanoseconds(ts.tv_sec) + ts.tv_nsec;
+//         checkTimeStamps(timestamp, &prevTimestamp, &prevMethod,
+//                         METHOD_CLOCK_GETTIME);
+//         return timestamp;
+//     }
+// #endif
+// 
+//     // CLOCK_BOOTTIME doesn't exist, fallback to /dev/alarm
+//     static int s_fd = -1;
+// 
+//     if (s_fd == -1) {
+//         int fd = open("/dev/alarm", O_RDONLY);
+//         if (android_atomic_cmpxchg(-1, fd, &s_fd)) {
+//             close(fd);
+//         }
+//     }
+// 
+//     result = ioctl(s_fd,
+//             ANDROID_ALARM_GET_TIME(ANDROID_ALARM_ELAPSED_REALTIME), &ts);
+// 
+//     if (result == 0) {
+//         timestamp = seconds_to_nanoseconds(ts.tv_sec) + ts.tv_nsec;
+//         checkTimeStamps(timestamp, &prevTimestamp, &prevMethod, METHOD_IOCTL);
+//         return timestamp;
+//     }
+// 
+//     // XXX: there was an error, probably because the driver didn't
+//     // exist ... this should return
+//     // a real error, like an exception!
+//     timestamp = systemTime(SYSTEM_TIME_MONOTONIC);
+//     checkTimeStamps(timestamp, &prevTimestamp, &prevMethod,
+//                     METHOD_SYSTEMTIME);
+//     return timestamp;
+// #else
     return systemTime(SYSTEM_TIME_MONOTONIC);
-#endif
+// #endif
 }
 
 }; // namespace android

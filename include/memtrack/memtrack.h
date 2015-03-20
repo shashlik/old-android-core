@@ -19,6 +19,8 @@
 
 #include <sys/types.h>
 #include <stddef.h>
+#include <errno.h> // needed for the error number definitions (defined elsewhere in bionic)
+#include <string.h> // needed for strerror (defined elsewhere in bionic)
 #include <cutils/compiler.h>
 
 #ifdef __cplusplus

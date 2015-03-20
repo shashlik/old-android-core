@@ -20,6 +20,7 @@
 #include <sys/cdefs.h>
 #include <sys/types.h>
 #include <stdint.h>
+#include <stdio.h> // Needed for snprintf (defined elsewhere in bionic)
 #include <stdbool.h>
 #include <unistd.h>
 #include <cutils/compiler.h>

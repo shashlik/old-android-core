@@ -25,7 +25,7 @@
 #include <sys/types.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
-#include <net/if.h>
+// #include <net/if.h> // this is not needed on Linux proper. Double definitions and all sorts. Very silly.
 #include <netdb.h>
 
 #include <linux/if.h>

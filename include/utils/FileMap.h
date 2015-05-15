@@ -107,8 +107,9 @@ public:
      */
     int advise(MapAdvice advice);
 
-protected:
+// protected:
     // don't delete objects; call release()
+    // sure, we will... except when we won't :P (see ziparchive)
     ~FileMap(void);
 
 private:

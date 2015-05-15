@@ -43,7 +43,7 @@
 
 #define AID_RADIO         1001  /* telephony subsystem, RIL */
 #define AID_BLUETOOTH     1002  /* bluetooth subsystem */
-#define AID_GRAPHICS      1003  /* graphics devices */
+#define AID_GRAPHICS      getuid()  /* graphics devices */
 #define AID_INPUT         1004  /* input devices */
 #define AID_AUDIO         1005  /* audio devices */
 #define AID_CAMERA        1006  /* camera devices */
@@ -118,7 +118,7 @@ static const struct android_id_info android_ids[] = {
 
     { "radio",         AID_RADIO, },
     { "bluetooth",     AID_BLUETOOTH, },
-    { "graphics",      AID_GRAPHICS, },
+//     { "graphics",      AID_GRAPHICS, },
     { "input",         AID_INPUT, },
     { "audio",         AID_AUDIO, },
     { "camera",        AID_CAMERA, },

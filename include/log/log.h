@@ -30,7 +30,7 @@
 
 #include <stdio.h>
 #include <time.h>
-#include <sys/types.h>
+#include <linux/types.h>
 #include <unistd.h>
 #ifdef HAVE_PTHREADS
 #include <pthread.h>

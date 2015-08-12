@@ -16,6 +16,7 @@
 */
 
 #include <cutils/sockets.h>
+#include <stdio.h>
 
 #include <stdlib.h>
 #include <string.h>
@@ -52,6 +53,7 @@ int socket_loopback_server(int port, int type)
 
     if(bind(s, (struct sockaddr *) &addr, sizeof(addr)) < 0) {
         close(s);
+        printf("Error binding socket! %s\n", strerror(errno));
         return -1;
     }
 
@@ -62,6 +64,7 @@ int socket_loopback_server(int port, int type)
 
         if (ret < 0) {
             close(s);
+            printf("Error listening to socket! %s\n", strerror(ret));
             return -1; 
         }
     }

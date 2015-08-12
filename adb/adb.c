@@ -716,6 +716,7 @@ int local_name_to_fd(const char *name)
             ret = socket_inaddr_any_server(port, SOCK_STREAM);
         } else {
             ret = socket_loopback_server(port, SOCK_STREAM);
+            D("Attempted to bind loopback server: %d\n", ret);
         }
 
         return ret;
@@ -1301,67 +1302,68 @@ int adb_main(int is_daemon, int server_port)
 
     /* don't listen on a port (default 5037) if running in secure mode */
     /* don't run as root if we are running in secure mode */
-    if (should_drop_privileges()) {
-        drop_capabilities_bounding_set_if_needed();
-
-        /* add extra groups:
-        ** AID_ADB to access the USB driver
-        ** AID_LOG to read system logs (adb logcat)
-        ** AID_INPUT to diagnose input issues (getevent)
-        ** AID_INET to diagnose network issues (netcfg, ping)
-        ** AID_GRAPHICS to access the frame buffer
-        ** AID_NET_BT and AID_NET_BT_ADMIN to diagnose bluetooth (hcidump)
-        ** AID_SDCARD_R to allow reading from the SD card
-        ** AID_SDCARD_RW to allow writing to the SD card
-        ** AID_MOUNT to allow unmounting the SD card before rebooting
-        ** AID_NET_BW_STATS to read out qtaguid statistics
-        */
-        gid_t groups[] = { AID_ADB, AID_LOG, AID_INPUT, AID_INET, AID_GRAPHICS,
-                           AID_NET_BT, AID_NET_BT_ADMIN, AID_SDCARD_R, AID_SDCARD_RW,
-                           AID_MOUNT, AID_NET_BW_STATS };
-        if (setgroups(sizeof(groups)/sizeof(groups[0]), groups) != 0) {
-            exit(1);
-        }
-
-        /* then switch user and group to "shell" */
-        if (setgid(AID_SHELL) != 0) {
-            exit(1);
-        }
-        if (setuid(AID_SHELL) != 0) {
-            exit(1);
-        }
-
-        D("Local port disabled\n");
-    } else {
+//     if (should_drop_privileges()) {
+//         drop_capabilities_bounding_set_if_needed();
+// 
+//         /* add extra groups:
+//         ** AID_ADB to access the USB driver
+//         ** AID_LOG to read system logs (adb logcat)
+//         ** AID_INPUT to diagnose input issues (getevent)
+//         ** AID_INET to diagnose network issues (netcfg, ping)
+//         ** AID_GRAPHICS to access the frame buffer
+//         ** AID_NET_BT and AID_NET_BT_ADMIN to diagnose bluetooth (hcidump)
+//         ** AID_SDCARD_R to allow reading from the SD card
+//         ** AID_SDCARD_RW to allow writing to the SD card
+//         ** AID_MOUNT to allow unmounting the SD card before rebooting
+//         ** AID_NET_BW_STATS to read out qtaguid statistics
+//         */
+//         gid_t groups[] = { AID_ADB, AID_LOG, AID_INPUT, AID_INET, AID_GRAPHICS,
+//                            AID_NET_BT, AID_NET_BT_ADMIN, AID_SDCARD_R, AID_SDCARD_RW,
+//                            AID_MOUNT, AID_NET_BW_STATS };
+//         if (setgroups(sizeof(groups)/sizeof(groups[0]), groups) != 0) {
+//             exit(1);
+//         }
+// 
+//         /* then switch user and group to "shell" */
+//         if (setgid(AID_SHELL) != 0) {
+//             exit(1);
+//         }
+//         if (setuid(AID_SHELL) != 0) {
+//             exit(1);
+//         }
+// 
+//         D("Local port disabled\n");
+//     } else {
         char local_name[30];
         build_local_name(local_name, sizeof(local_name), server_port);
         if(install_listener(local_name, "*smartsocket*", NULL, 0)) {
+            printf("ERROR! Install listener failed...\n");
             exit(1);
         }
-    }
+//     }
 
     int usb = 0;
-    if (access(USB_ADB_PATH, F_OK) == 0 || access(USB_FFS_ADB_EP0, F_OK) == 0) {
-        // listen on USB
-        usb_init();
-        usb = 1;
-    }
+//     if (access(USB_ADB_PATH, F_OK) == 0 || access(USB_FFS_ADB_EP0, F_OK) == 0) {
+//         // listen on USB
+//         usb_init();
+//         usb = 1;
+//     }
 
     // If one of these properties is set, also listen on that port
     // If one of the properties isn't set and we couldn't listen on usb,
     // listen on the default port.
-    property_get("service.adb.tcp.port", value, "");
-    if (!value[0]) {
-        property_get("persist.adb.tcp.port", value, "");
-    }
-    if (sscanf(value, "%d", &port) == 1 && port > 0) {
-        printf("using port=%d\n", port);
-        // listen on TCP port specified by service.adb.tcp.port property
-        local_init(port);
-    } else if (!usb) {
-        // listen on default port
-        local_init(DEFAULT_ADB_LOCAL_TRANSPORT_PORT);
-    }
+//     property_get("service.adb.tcp.port", value, "");
+//     if (!value[0]) {
+//         property_get("persist.adb.tcp.port", value, "");
+//     }
+//     if (sscanf(value, "%d", &port) == 1 && port > 0) {
+//         printf("using port=%d\n", port);
+//         // listen on TCP port specified by service.adb.tcp.port property
+//         local_init(port);
+//     } else if (!usb) {
+//         // listen on default port
+//         local_init(DEFAULT_ADB_LOCAL_TRANSPORT_PORT);
+//     }
 
     D("adb_main(): pre init_jdwp()\n");
     init_jdwp();

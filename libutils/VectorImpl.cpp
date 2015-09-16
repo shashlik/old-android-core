@@ -310,9 +310,9 @@ void* VectorImpl::editItemLocation(size_t index)
 
 const void* VectorImpl::itemLocation(size_t index) const
 {
-    ALOG_ASSERT(index<capacity(),
-        "[%p] itemLocation: index=%d, capacity=%d, count=%d",
-        this, (int)index, (int)capacity(), (int)mCount);
+//     ALOG_ASSERT(index<capacity(),
+//         "[%p] itemLocation: index=%d, capacity=%d, count=%d",
+//         this, (int)index, (int)capacity(), (int)mCount);
 
     if (index < capacity()) {
         const  void* buffer = arrayImpl();

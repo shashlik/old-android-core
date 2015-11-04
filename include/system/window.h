@@ -46,7 +46,7 @@ __BEGIN_DECLS
 // support either the prior ANativeWindow interface, which did not pass libsync
 // fences around, or the new interface that does.  This #define is only present
 // when the ANativeWindow interface does include libsync support.
-#define ANDROID_NATIVE_WINDOW_HAS_SYNC 1
+// #define ANDROID_NATIVE_WINDOW_HAS_SYNC 1
 
 // ---------------------------------------------------------------------------
 

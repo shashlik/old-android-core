@@ -18,7 +18,8 @@
 #define __SOCKET_LOCAL_H
 
 #define FILESYSTEM_SOCKET_PREFIX "/tmp/" 
-#define ANDROID_RESERVED_SOCKET_PREFIX "/dev/socket/"
+// #define ANDROID_RESERVED_SOCKET_PREFIX "/dev/socket/"
+#define ANDROID_RESERVED_SOCKET_PREFIX "/tmp/shashlik-socket/"
 
 /*
  * Set up a given sockaddr_un, to have it refer to the given

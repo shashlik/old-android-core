@@ -43,7 +43,13 @@ public:
         Mutex::Autolock _l(sLock);
         return sInstance != 0;
     }
-    
+
+    // WARNING Do NOT use this unless you REALLY mean it
+    // (basically, this is useful for clearing things between zygote instances)
+    static void clearInstance() {
+        Mutex::Autolock _l(sLock);
+        sInstance = 0;
+    }
 protected:
     ~Singleton() { };
     Singleton() { };
